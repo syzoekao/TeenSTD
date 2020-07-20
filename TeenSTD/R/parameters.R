@@ -43,7 +43,18 @@ create_parameters <- function(days = 30,
     IUD_h10 <- 0
     IUD_factor <- 0
   }
-
+  
+#Created dataframe with parameter ranges for calibrated model inputs
+  parm_name<-(c("treat_fact_f", "treat_fact_m", "beta","factor", "alpha_m", "incubate", "screen_fact_m", "fr_sex", "p-condom", "p_condom_l", "r_preg", "red_condrom","oral_h10","ratio_oral_mean_over_h10", "IUD_h10","ratio_IUD_mean_over_h10", "oral_fact", "IUD_factor", "I_m", "T_m", "I_f", "T_f"))
+  parm_lb<-(c(1,1,0.03,1,0.65,1,0,0,0.329,0.329,0,0.15,0.143,NA,0.056,NA,1,0.5,0.0176,NA,0.0176,NA))
+  parm_ub<-(c(120,120,0.8,2,0.96,21,0.2,50,0.728,1,0.094,0.9,0.266,NA,0.104,NA,1,1,0.1464,NA,0.1464,NA))
+  parm_df<-data.frame(parm_name, parm_lb, parm_ub)
+  #note: used factor0 <- qunif(lhs[, "factor"], 1, 2) for "factor"
+  #note: used alpha_f for "alpha.m"<- 0.65, 0.96
+  #note: the LB for p_condom_l is assumed to be p.condom according to the paper,set to p.condom'sLB
+  #oral_h10 assumed to be Proportion of women using oral birth control pills, Overall, p.oral [0.143,0.266] according to paper
+  #ratio_oral_mean_over_h10 and ratio_IUD_mean_over_h10 unclear in paper and code, set as NA.
+  #is ratio_oral_mean_over_h10 the same as mean.oral  (0.2043*(1-0.3), 0.2043*(1+0.3)), or (0.14301,0.26559), and ratio_IUD_mean_over_h10 the same as mean.IUD (0.0798*(1-0.3), 0.0798*(1+0.3)), or (0.05586, 0.10374)?
   cycles <- month * years + 1
 
   # Time horizon

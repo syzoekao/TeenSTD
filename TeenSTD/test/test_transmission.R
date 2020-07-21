@@ -59,11 +59,9 @@ target_df <- data.table(time = rep(c(2005:2013), 3),
                         type = rep(c("chlamydia: male", "chlamydia: female", "pregnancy"), each = 9))
 setkeyv(target_df, c("type", "time"))
 
-# flow_df <- rbindlist(list(flow_df, target_df))
-
 ggplot(data = flow_df, aes(x = time, y = y, group = type)) +
   geom_line(data = flow_df, aes(x = time, y = y)) +
-  geom_point(data = target_df, aes(x = time, y = y)) +
-  facet_wrap(~ type) +
+  geom_point(data = target_df, aes(x = time, y = y), shape = 21, stroke = 1) +
+  facet_wrap(~ type, scales = "free_y") +
   theme_bw()
 

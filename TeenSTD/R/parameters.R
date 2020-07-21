@@ -1,31 +1,31 @@
+#' The parameter values are a set of posterior parameter set
 #' @export
 create_parameters <- function(days = 30,
                               month = 12,
                               n_gp = 4,
                               years = 9,
                               burnin = 0,
-                              treat_fact_f = 55.67, #calibrate
-                              treat_fact_m = 63.66, #calibrate
-                              beta = 0.147, #calibrate
-                              factor = 1.475, #calibrate
-                              alpha_m = 0.887, #calibrate
-                              incubate = 10.8, #calibrate
-                              screen_fact_m = 0.096, #calibrate
-                              fr_sex = 11.58, #calibrate
-                              p_condom = 0.498, #calibrate
-                              p_condom_l = 0.649, #calibrate
-                              r_preg = 0.032, #calibrate
-                              red_condom = 0.529, #calibrate
-                              oral_h10 = 0.68, #calibrate
-                              ratio_oral_mean_over_h10 = 0.3882353, #calibrate; mean_oral = 0.264
-                              IUD_h10 = 0.26, #calibrate
-                              ratio_IUD_mean_over_h10 = 0.3961538, #calibrate; mean_IUD = 0.103
-                              oral_fact = 1, #calibrate
-                              IUD_factor = 1 / 1.29, #calibrate
-                              I_m = 0.062, #calibrate
-                              T_m = 0.031, #calibrate
-                              I_f = 0.07, #calibrate
-                              T_f = 0.035, #calibrate
+                              treat_fact_f = 83.77591, #calibrate
+                              treat_fact_m = 67.51961, #calibrate
+                              screen_fact_m = 0.142667, #calibrate
+                              beta = 0.09999317, #calibrate
+                              factor = 1.62593, #calibrate
+                              alpha_m = 0.8800686, #calibrate
+                              incubate = 18.46923, #calibrate
+                              fr_sex = 5.186936, #calibrate
+                              p_condom = 0.6825322, #calibrate
+                              p_condom_l = 0.9998123, #calibrate
+                              r_preg = 0.05181339, #calibrate
+                              red_condom = 0.1656216, #calibrate
+                              oral_h10 = 0.6561537, #calibrate
+                              ratio_oral_mean_over_h10 = 0.2630736 / 0.4051145, #calibrate
+                              IUD_h10 = 0.2456997, #calibrate
+                              ratio_IUD_mean_over_h10 = 0.09600559 / 0.2456997, #calibrate
+                              IUD_factor = 0.8340665, #calibrate
+                              I_m = 0.0208744, #calibrate
+                              I_f = 0.09887864, #calibrate
+                              T_m = 7.260635e-05, #calibrate
+                              T_f = 0.06556457, #calibrate
                               snes = 0.93,
                               spec = 0.94,
                               pos = 0.93,
@@ -37,18 +37,14 @@ create_parameters <- function(days = 30,
                               fail_condom_oral = 0.0009,
                               model_type = "dual") {
 
+
   if(model_type != "dual") {
     r_preg <- 0
     oral_h10 <- 0
     IUD_h10 <- 0
     IUD_factor <- 0
   }
-  
-#Created dataframe with parameter ranges for calibrated model inputs
-  parm_name<-(c("treat_fact_f", "treat_fact_m", "beta","factor", "alpha_m", "incubate", "screen_fact_m", "fr_sex", "p-condom", "p_condom_l", "r_preg", "red_condrom","oral_h10","ratio_oral_mean_over_h10", "IUD_h10","ratio_IUD_mean_over_h10", "oral_fact", "IUD_factor", "I_m", "T_m", "I_f", "T_f"))
-  parm_lb<-(c(1,1,0.03,1,0.65,1,0,0,0.329,0.329,0,0.15,0.143,NA,0.056,NA,1,0.5,0.0176,NA,0.0176,NA))
-  parm_ub<-(c(120,120,0.8,2,0.96,21,0.2,50,0.728,1,0.094,0.9,0.266,NA,0.104,NA,1,1,0.1464,NA,0.1464,NA))
-  parm_df<-data.frame(parm_name, parm_lb, parm_ub)
+
   #note: used factor0 <- qunif(lhs[, "factor"], 1, 2) for "factor"
   #note: used alpha_f for "alpha.m"<- 0.65, 0.96
   #note: the LB for p_condom_l is assumed to be p.condom according to the paper,set to p.condom'sLB
@@ -65,7 +61,7 @@ create_parameters <- function(days = 30,
   risk_tr_m <- -log(1 - matrix(rep(risk_tr_ary[, 4, "male"], 4), ncol = 2, byrow = T))
   risk_tr_f <- -log(1 - matrix(rep(risk_tr_ary[, 4, "female"], 4), ncol = 2, byrow = T))
 
-  p_screen_f <- c(rep(0.3580, burnin),
+  p_screen_f <- c(rep(0.3508, burnin),
                   c(0.3580, 0.3786, 0.4204, 0.4660, 0.4764, 0.4799, 0.4745, 0.4629, 0.4486, 0.4638))
   names(p_screen_f) <- c((2013 - (years + burnin)) : 2013)
   p_screen_m <- screen_fact_m * p_screen_f
@@ -126,8 +122,8 @@ create_parameters <- function(days = 30,
   pTreat_f <- 1 / ((incubate + treat_fact_f) / days)
   pTreat_m <- 1 / ((incubate + treat_fact_m) / days)
 
-  p_condom_l0 <- rep(p_condom_l, years * month + 1)
-  p_condom_h0 <- rep(p_condom_h, years * month + 1)
+  p_condom_l0 <- rep(p_condom_l, (burnin + years) * month + 1)
+  p_condom_h0 <- rep(p_condom_h, (burnin + years) * month + 1)
   p_condom <- cbind(low = p_condom_l0, high = p_condom_h0)
 
   n_partner_mo <- lapply(n_partner, function(x) x / month)
@@ -137,7 +133,7 @@ create_parameters <- function(days = 30,
   psi_t_m <- pTreat_m * pInsure
   psi_t_f <- pTreat_f * pInsure
 
-  gamma <- c(gamma_n = 1 / month, gamma_t = 1 / (7 / days))
+  v_gamma <- c(gamma_n = 1 / month, gamma_t = 1 / (7 / days))
 
   gr <- 1 / (5 * 12)
 
@@ -247,10 +243,10 @@ create_parameters <- function(days = 30,
                 cum_inf = cum_inf,
                 cum_preg = cum_preg)
 
-  names(initials) <- c(rep(paste(c("S"), as.character(c(1:4)), sep = "")),
-                       rep(paste(c("Ia"), as.character(c(1:4)), sep = "")),
-                       rep(paste(c("Is"), as.character(c(1:4)), sep = "")),
-                       rep(paste(c("T"), as.character(c(1:4)), sep = "")),
+  names(initials) <- c(rep(paste(c("S"), as.character(c(1:n_gp)), sep = "")),
+                       rep(paste(c("Ia"), as.character(c(1:n_gp)), sep = "")),
+                       rep(paste(c("Is"), as.character(c(1:n_gp)), sep = "")),
+                       rep(paste(c("T"), as.character(c(1:n_gp)), sep = "")),
                        rep(paste(c("P"), as.character(c(1:sub_gp)), sep = "")),
                        rep(paste(c("Ia_P"), as.character(c(1:sub_gp)), sep = "")),
                        rep(paste(c("Is_P"), as.character(c(1:sub_gp)), sep = "")),
@@ -262,20 +258,44 @@ create_parameters <- function(days = 30,
 
   v_nu <- gr * dpop
 
+  #### Create .apf
+  tmp_time <- c(0, month * c(1 : (burnin + years)) + 1)
+  psi_t_m_apf <- approxfun(tmp_time, rep(psi_t_m, length(tmp_time)), method = "linear")
+  psi_s_m_apf <- approxfun(tmp_time, psi_s_m, method = "linear")
+  psi_t_f_apf <- approxfun(tmp_time, rep(psi_t_f, length(tmp_time)), method = "linear")
+  psi_s_f_apf <- approxfun(tmp_time, psi_s_f, method = "linear")
+
+  tmp_time <- c(0 : (month * (burnin + years) + 1))
+  R_Inf_nopreg3_apf <- approxfun(tmp_time, c(R_Inf_nopreg[, 1], R_Inf_nopreg[nrow(R_Inf_nopreg), 1]))
+  R_Inf_nopreg4_apf <- approxfun(tmp_time, c(R_Inf_nopreg[, 2], R_Inf_nopreg[nrow(R_Inf_nopreg), 2]))
+  R_noInf_preg3_apf <- approxfun(tmp_time, c(R_noInf_preg[, 1], R_Inf_preg[nrow(R_noInf_preg), 1]))
+  R_noInf_preg4_apf <- approxfun(tmp_time, c(R_noInf_preg[, 2], R_Inf_preg[nrow(R_noInf_preg), 2]))
+  R_Inf_preg3_apf <- approxfun(tmp_time, c(R_Inf_preg[, 1], R_Inf_preg[nrow(R_Inf_preg), 1]))
+  R_Inf_preg4_apf <- approxfun(tmp_time, c(R_Inf_preg[, 2], R_Inf_preg[nrow(R_Inf_preg), 2]))
+  preg_mix3_apf <- approxfun(tmp_time, c(preg_mix_mon[, 1], preg_mix_mon[nrow(preg_mix_mon), 1]))
+  preg_mix4_apf <- approxfun(tmp_time, c(preg_mix_mon[, 2], preg_mix_mon[nrow(preg_mix_mon), 2]))
+
+  apfs <- list(R_Inf_nopreg3_apf = R_Inf_nopreg3_apf, R_Inf_nopreg4_apf = R_Inf_nopreg4_apf,
+               R_noInf_preg3_apf = R_noInf_preg3_apf, R_noInf_preg4_apf = R_noInf_preg4_apf,
+               R_Inf_preg3_apf = R_Inf_preg3_apf, R_Inf_preg4_apf = R_Inf_preg4_apf,
+               preg_mix3_apf = preg_mix3_apf, preg_mix4_apf = preg_mix4_apf,
+               psi_t_m_apf = psi_t_m_apf, psi_t_f_apf = psi_t_f_apf,
+               psi_s_m_apf = psi_s_m_apf, psi_s_f_apf = psi_s_f_apf)
+
   par <- list(preg_mix_mon = preg_mix_mon,
               dpop = dpop,
               R_m1 = R_m[100, "low"], R_m2 = R_m[100, "high"],
               R_f1 = R_f[100, "low"], R_f2 = R_f[100, "high"],
-              R_Inf_nopreg = R_Inf_nopreg,
-              R_noInf_preg = R_noInf_preg,
-              R_Inf_preg = R_Inf_preg,
+              # R_Inf_nopreg = R_Inf_nopreg,
+              # R_noInf_preg = R_noInf_preg,
+              # R_Inf_preg = R_Inf_preg,
               alpha = alpha,
               pos = pos,
-              psi_t_m = psi_t_m,
-              psi_t_f = psi_t_f,
-              psi_s_m = psi_s_m,
-              psi_s_f = psi_s_f,
-              gamma = gamma,
+              # psi_t_m = psi_t_m,
+              # psi_t_f = psi_t_f,
+              # psi_s_m = psi_s_m,
+              # psi_s_f = psi_s_f,
+              v_gamma = v_gamma,
               nu = v_nu,
               mu = rep(0, 4),
               gr = gr,
@@ -290,10 +310,30 @@ create_parameters <- function(days = 30,
               days = days,
               month = month,
               years = years,
-              n_gp = n_gp,
               burnin = burnin,
               max_time = max_time,
               n_state = n_state)
+  par <- c(par, apfs)
+
+  par$v_d_empty <- list(dS = rep(NA, n_gp),
+                    dIa = rep(NA, n_gp),
+                    dIs = rep(NA, n_gp),
+                    dT = rep(NA, n_gp),
+                    dP = rep(NA, sub_gp),
+                    dIa_P = rep(NA, sub_gp),
+                    dIs_P = rep(NA, sub_gp),
+                    dScr_P = rep(NA, sub_gp),
+                    d_cum_chl = rep(NA, n_gp),
+                    d_cum_inf = rep(NA, n_gp),
+                    d_cum_preg = rep(NA, sub_gp))
 
   return(list(par = par, initials = initials))
 }
+
+
+# #Created dataframe with parameter ranges for calibrated model inputs
+# parm_name<-(c("treat_fact_f", "treat_fact_m", "beta","factor", "alpha_m", "incubate", "screen_fact_m", "fr_sex", "p-condom", "p_condom_l", "r_preg", "red_condrom","oral_h10","ratio_oral_mean_over_h10", "IUD_h10","ratio_IUD_mean_over_h10", "oral_fact", "IUD_factor", "I_m", "T_m", "I_f", "T_f"))
+# parm_lb<-(c(1,1,0.03,1,0.65,1,0,0,0.329,0.329,0,0.15,0.143,NA,0.056,NA,1,0.5,0.0176,NA,0.0176,NA))
+# parm_ub<-(c(120,120,0.8,2,0.96,21,0.2,50,0.728,1,0.094,0.9,0.266,NA,0.104,NA,1,1,0.1464,NA,0.1464,NA))
+# parm_df<-data.frame(parm_name, parm_lb, parm_ub)
+

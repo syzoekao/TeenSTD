@@ -31,7 +31,7 @@ create_parameters(
   I_f = 0.09887864,
   T_m = 7.260635e-05,
   T_f = 0.06556457,
-  snes = 0.93,
+  sens = 0.93,
   spec = 0.94,
   pos = 0.93,
   pInsure = 0.97,
@@ -89,8 +89,37 @@ proportion of the probability of oral contraception use among women at high risk
 \item{ratio_IUD_mean_over_h10}{average probability of IUD use among women is a
 proportion of the probability of IUD use among women at high risk}
 
-\item{IUD_factor}{The probability of IUD use among women at year t is calculated as the probability
-of IUD use of year t+1 multiplied by `IUD_factor``}
+\item{IUD_factor}{the probability of IUD use among women at year t is calculated as the probability
+of IUD use of year t+1 multiplied by `IUD_factor`}
+
+\item{I_m}{proportion of men in infected state initially}
+
+\item{I_f}{proportion of women in infected state initially}
+
+\item{T_m}{proportion of men in treated state initially}
+
+\item{T_f}{proportion of women in treated state initially}
+
+\item{sens}{sensitivity of CT testing}
+
+\item{spec}{specificity of CT testing}
+
+\item{pos}{probability of testing positive among the infected}
+
+\item{pInsure}{proportion of the adolescent who are insured}
+
+\item{fail_condom}{probability of failed condom use per sex act}
+
+\item{fail_oral}{probability of failed oral contraception per sex act}
+
+\item{fail_IUD}{probability of failed IUD use per sex act}
+
+\item{fail_condom_IUD}{probability of failed condom use and IUD use per sex act}
+
+\item{fail_condom_oral}{probability of failed condom use and oral contraception per sex act}
+
+\item{model_type}{whether the model considers both chlamydial infections and pregnancy (`"dual"`) or
+only chlamydial infections}
 }
 \description{
 Create parameters for the TeenSTD model

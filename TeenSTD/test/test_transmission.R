@@ -55,7 +55,7 @@ nsim <- nrow(parmdf)
 
 a <- Sys.time()
 
-ncore <- parallel::detectCores() - 1
+ncore <- parallel::detectCores() - 3
 c1 <- makeCluster(ncore)
 registerDoParallel(c1)
 

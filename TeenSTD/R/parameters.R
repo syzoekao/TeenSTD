@@ -88,17 +88,13 @@ create_parameters <- function(days = 30,
     IUD_factor <- 0
   }
 
-  #note: used factor0 <- qunif(lhs[, "factor"], 1, 2) for "factor"
-  #note: used alpha_f for "alpha.m"<- 0.65, 0.96
-  #note: the LB for p_condom_l is assumed to be p.condom according to the paper,set to p.condom'sLB
-  #oral_h10 assumed to be Proportion of women using oral birth control pills, Overall, p.oral [0.143,0.266] according to paper
-  #ratio_oral_mean_over_h10 and ratio_IUD_mean_over_h10 unclear in paper and code, set as NA.
-  #is ratio_oral_mean_over_h10 the same as mean.oral  (0.2043*(1-0.3), 0.2043*(1+0.3)), or (0.14301,0.26559), and ratio_IUD_mean_over_h10 the same as mean.IUD (0.0798*(1-0.3), 0.0798*(1+0.3)), or (0.05586, 0.10374)?
+  #### Number of time steps in the calibration time window
   cycles <- month * years + 1
 
-  # Time horizon
+  #### Time horizon including the burnin period
   max_time <- month * (burnin + years)
 
+  #### transition between risk groups (this is not used in the model)
   tmp_name <- c(paste("mo", c(0, 13, 49, 85), sep = ""))
   risk_tr_ary <- sex_behave_data$risk.tr.ary[c(1:2), , ]
   risk_tr_m <- -log(1 - matrix(rep(risk_tr_ary[, 4, "male"], 4), ncol = 2, byrow = T))

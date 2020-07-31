@@ -1,3 +1,9 @@
+#' @title Transmission model at a time step
+#'
+#' @param t time
+#' @param initials epidemic states at each time step (population distribution in each of S, I, T, and P states)
+#' @param par a list of parameter values
+#'
 #' @export
 transmission_model <- function(t, initials, par) {
   list2env(par, envir = .GlobalEnv)

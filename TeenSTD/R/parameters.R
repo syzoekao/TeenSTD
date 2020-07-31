@@ -1,4 +1,47 @@
-#' The parameter values are a set of posterior parameter set
+#' @title Create parameters for the TeenSTD model
+#'
+#' @param days number of days per month
+#' @param month number of months per year
+#' @param n_gp total number of groups including two genders (men and women) and two risk groups (high and low)
+#' @param years number of years of simulation (2005-2013)
+#' @param burnin burnin period in years (not part of the `years` parameter)
+#' @param treat_fact_f time to seek treatment among women (in days)
+#' @param treat_fact_m time to seek treatment among men (in days)
+#' @param screen_fact_m factor adjusting the probability that a man is screened for CT, modeled as a proportion
+#'        of the probability of CT screening among women
+#' @param beta transmission rate from men to women per sex act
+#' @param factor factor adjusting the transmission rate from women to men, ranging from 0 to 1
+#' @param alpha_m proportion of asymptomatic CT infection (same for both men and women)
+#' @param incubate incubation period in days
+#' @param fr_sex frequency of sex per month
+#' @param p_condom average probability of condom use per sex act
+#' @param p_condom_l probability of condom use per sex act among low risk group
+#' @param r_preg rate of pregnancy per sex act
+#' @param red_condom reduction of transmission due to condom use
+#' @param oral_h10 probability of oral contraception use among women who are at high risk at the end of year 9
+#' @param ratio_oral_mean_over_h10 average probability of oral contraception use among women is a
+#'        proportion of the probability of oral contraception use among women at high risk
+#' @param IUD_h10 probability of IUD use among women at high risk at the end of year 9
+#' @param ratio_IUD_mean_over_h10 average probability of IUD use among women is a
+#'        proportion of the probability of IUD use among women at high risk
+#' @param IUD_factor the probability of IUD use among women at year t is calculated as the probability
+#'        of IUD use of year t+1 multiplied by `IUD_factor`
+#' @param I_m proportion of men in infected state initially
+#' @param I_f proportion of women in infected state initially
+#' @param T_m proportion of men in treated state initially
+#' @param T_f proportion of women in treated state initially
+#' @param sens sensitivity of CT testing
+#' @param spec specificity of CT testing
+#' @param pos probability of testing positive among the infected
+#' @param pInsure proportion of the adolescent who are insured
+#' @param fail_condom probability of failed condom use per sex act
+#' @param fail_oral probability of failed oral contraception per sex act
+#' @param fail_IUD probability of failed IUD use per sex act
+#' @param fail_condom_IUD probability of failed condom use and IUD use per sex act
+#' @param fail_condom_oral probability of failed condom use and oral contraception per sex act
+#' @param model_type whether the model considers both chlamydial infections and pregnancy (`"dual"`) or
+#'        only chlamydial infections
+#'
 #' @export
 create_parameters <- function(days = 30,
                               month = 12,
@@ -26,7 +69,7 @@ create_parameters <- function(days = 30,
                               I_f = 0.09887864, #calibrate
                               T_m = 7.260635e-05, #calibrate
                               T_f = 0.06556457, #calibrate
-                              snes = 0.93,
+                              sens = 0.93,
                               spec = 0.94,
                               pos = 0.93,
                               pInsure = 0.97,
@@ -286,15 +329,8 @@ create_parameters <- function(days = 30,
               dpop = dpop,
               R_m1 = R_m[100, "low"], R_m2 = R_m[100, "high"],
               R_f1 = R_f[100, "low"], R_f2 = R_f[100, "high"],
-              # R_Inf_nopreg = R_Inf_nopreg,
-              # R_noInf_preg = R_noInf_preg,
-              # R_Inf_preg = R_Inf_preg,
               alpha = alpha,
               pos = pos,
-              # psi_t_m = psi_t_m,
-              # psi_t_f = psi_t_f,
-              # psi_s_m = psi_s_m,
-              # psi_s_f = psi_s_f,
               v_gamma = v_gamma,
               nu = v_nu,
               mu = rep(0, 4),

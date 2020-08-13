@@ -53,6 +53,18 @@ colnames(parmdf) <- c("treat_fact_f", "treat_fact_m", "screen_fact_m", "beta",
 nsim <- nrow(parmdf)
 
 
+# MDH.yr <- readRDS("/Users/szu-yukao/Documents/Old project/Chlamydia Project Summer 2015/Compartmental Model/chlamydia/TeenSTD/inst/raw_data/MDH.yr.rds")
+# Preg.yr <- readRDS("/Users/szu-yukao/Documents/Old project/Chlamydia Project Summer 2015/Compartmental Model/chlamydia/TeenSTD/inst/raw_data/Preg.yr.rds")
+# load("/Users/szu-yukao/Documents/Old project/Chlamydia Project Summer 2015/Compartmental Model/chlamydia/TeenSTD/inst/raw_data/sex.behave.RData")
+# source("R/parameters.R")
+# source("R/transmission.R")
+
+target <- c(MDH_data$obsM1[1:9], MDH_data$obsF1[1:9], preg_data$obs[1:9])
+target_df <- data.table(time = rep(c(2005:2013), 3),
+                        y = target,
+                        type = rep(c("chlamydia: male", "chlamydia: female", "pregnancy"), each = 9))
+setkeyv(target_df, c("type", "time"))
+
 a <- Sys.time()
 
 ncore <- parallel::detectCores() - 3
@@ -63,12 +75,17 @@ outlist <- foreach(i = c(1:nsim),
                    .packages = c("TeenSTD", "deSolve", "data.table")) %dopar% {
   par_i <- parmdf[i, ]
   res <- sim_wrapper(par_i)
+
+  sim_v <- c(res$fluxM, res$fluxF, res$fluxP)
+  llk <- calculate_likelihood(sim_v, target)
+
   flow_df <- data.table(time = rep(c(2005:2013), 3),
-                        y = c(res$fluxM, res$fluxF, res$fluxP),
+                        y = sim_v,
                         type = rep(c("chlamydia: male", "chlamydia: female", "pregnancy"), each = 9),
                         sim_no = i)
   setkeyv(flow_df, c("type", "time"))
-  flow_df
+
+  out <- list(flow_df = flow_df, llk = llk)
 }
 
 stopCluster(c1)
@@ -76,18 +93,12 @@ stopCluster(c1)
 print(Sys.time() - a)
 
 
-sim_flow <- rbindlist(outlist)
+sim_flow <- rbindlist(lapply(outlist, function(x) x$flow_df))
 
 sum_flow <- sim_flow[, list(mean_y = mean(y),
                             ub_y = quantile(y, prob = 0.975),
                             lb_y = quantile(y, prob = 0.025)),
                      by = c("type", "time")]
-
-target <- c(MDH_data$obsM1[1:9], MDH_data$obsF1[1:9], preg_data$obs[1:9])
-target_df <- data.table(time = rep(c(2005:2013), 3),
-                        y = target,
-                        type = rep(c("chlamydia: male", "chlamydia: female", "pregnancy"), each = 9))
-setkeyv(target_df, c("type", "time"))
 
 ggplot(data = sum_flow, aes(x = time, y = mean_y, group = type)) +
   geom_line(data = sum_flow, aes(x = time, y = mean_y),
@@ -102,4 +113,7 @@ ggplot(data = sum_flow, aes(x = time, y = mean_y, group = type)) +
   ylab("proportion of population") +
   theme_bw()
 
+
+llk <- lapply(outlist, function(x) x$llk)
+parmdf$llk <- llk
 

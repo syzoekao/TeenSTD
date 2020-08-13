@@ -251,5 +251,15 @@ process_output <- function(sim_out, par) {
 }
 
 
+#' @title Likelihood function
+#' @export
+calculate_likelihood <- function(sim_v, target) {
+  sd_m <- c(0.003364442, 0.003729386, 0.003717765, 0.004582775, 0.004684864, 0.005163602, 0.005984866, 0.006227062, 0.006124289) # 0.02722729 is from the MDH and Preg data.R file (pooled.mean.f)
+  sd_f <- c(0.01834739, 0.01852503, 0.01963031, 0.02184941, 0.02172041, 0.02401920, 0.02449391, 0.02653356, 0.02537763)
+  sd_p <- 2*c(0.0010880447, 0.0011173076, 0.0011302747, 0.0011044516, 0.0010485348, 0.0009958353, 0.0009393175, 0.0009086499, 0.0008664139)
 
+  sd <- c(sd_m, sd_f, sd_p)
+
+  sum(dnorm(x = target, sim_v, sd, log = TRUE))
+}
 

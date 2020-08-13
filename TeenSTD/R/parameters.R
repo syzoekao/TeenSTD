@@ -363,8 +363,13 @@ create_parameters <- function(days = 30,
 }
 
 
-# #Created dataframe with parameter ranges for calibrated model inputs
-# parm_name<-(c("treat_fact_f", "treat_fact_m", "beta","factor", "alpha_m", "incubate", "screen_fact_m", "fr_sex", "p-condom", "p_condom_l", "r_preg", "red_condrom","oral_h10","ratio_oral_mean_over_h10", "IUD_h10","ratio_IUD_mean_over_h10", "oral_fact", "IUD_factor", "I_m", "T_m", "I_f", "T_f"))
+##Created dataframe with parameter ranges for calibrated model inputs
+# parm_name<-(c("treat_fact_f", "treat_fact_m", "beta","factor",
+#               "alpha_m", "incubate", "screen_fact_m", "fr_sex",
+#               "p_condom", "p_condom_l", "r_preg", "red_condrom",
+#               "oral_h10","ratio_oral_mean_over_h10",
+#               "IUD_h10","ratio_IUD_mean_over_h10", "oral_fact",
+#               "IUD_factor", "I_m", "T_m", "I_f", "T_f"))
 # parm_lb<-(c(1,1,0.03,1,0.65,1,0,0,0.329,0.329,0,0.15,0.143,NA,0.056,NA,1,0.5,0.0176,NA,0.0176,NA))
 # parm_ub<-(c(120,120,0.8,2,0.96,21,0.2,50,0.728,1,0.094,0.9,0.266,NA,0.104,NA,1,1,0.1464,NA,0.1464,NA))
 # parm_df<-data.frame(parm_name, parm_lb, parm_ub)

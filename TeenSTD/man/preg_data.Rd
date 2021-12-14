@@ -5,7 +5,7 @@
 \alias{preg_data}
 \title{preg_data}
 \format{
-An object of class \code{data.frame} with 9 rows and 6 columns.
+An object of class \code{data.frame} with 9 rows and 2 columns.
 }
 \usage{
 preg_data

@@ -5,7 +5,7 @@
 \alias{MDH_data}
 \title{MDH_data}
 \format{
-An object of class \code{data.frame} with 9 rows and 15 columns.
+An object of class \code{data.frame} with 9 rows and 3 columns.
 }
 \usage{
 MDH_data

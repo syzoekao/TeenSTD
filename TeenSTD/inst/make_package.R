@@ -2,7 +2,9 @@
 # setwd("..")
 tmp_path <- "inst/raw_data/"
 MDH_data <- readRDS(paste0(tmp_path, "MDH.yr.rds"))
+MDH_data <- MDH_data[, c("time", "obsM1", "obsF1")]
 preg_data <- readRDS(paste0(tmp_path, "Preg.yr.rds"))
+preg_data <- preg_data[, c("time", "obs")]
 sex_behave_data <- get(load(paste0(tmp_path, "sex.behave.RData")))
 posterior_set <- readRDS(paste0("test/posterior_set.RDS"))
 

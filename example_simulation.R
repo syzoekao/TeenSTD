@@ -78,20 +78,20 @@ registerDoParallel(c1)
 
 outlist <- foreach(i = c(1:nsim),
                    .packages = c("TeenSTD", "deSolve", "data.table")) %dopar% {
-  par_i <- parmdf[i, ]
-  res <- sim_wrapper(par_i)
+                     par_i <- parmdf[i, ]
+                     res <- sim_wrapper(par_i)
 
-  sim_v <- c(res$fluxM, res$fluxF, res$fluxP)
-  llk <- calculate_likelihood(sim_v, target)
+                     sim_v <- c(res$fluxM, res$fluxF, res$fluxP)
+                     llk <- calculate_likelihood(sim_v, target)
 
-  flow_df <- data.table(time = rep(c(2005:2013), 3),
-                        y = sim_v,
-                        type = rep(c("chlamydia: male", "chlamydia: female", "pregnancy"), each = 9),
-                        sim_no = i)
-  setkeyv(flow_df, c("type", "time"))
+                     flow_df <- data.table(time = rep(c(2005:2013), 3),
+                                           y = sim_v,
+                                           type = rep(c("chlamydia: male", "chlamydia: female", "pregnancy"), each = 9),
+                                           sim_no = i)
+                     setkeyv(flow_df, c("type", "time"))
 
-  out <- list(flow_df = flow_df, llk = llk)
-}
+                     out <- list(flow_df = flow_df, llk = llk)
+                   }
 
 stopCluster(c1)
 

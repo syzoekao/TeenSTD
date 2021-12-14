@@ -5,31 +5,62 @@ This repository contains an `R` package (`TeenSTD`) for the published study, "Us
 The model code maintained in this repository was developed for the **dual calibration** scenario, which calibrated to both the chlamydia incidence and pregnancy incidence in 2005-2013 in Minnesota. The model code and the related datasets were provided in the `R` package. In this `README` file, we summarized the structure of the repository, and the components and the use of the package. Here is the outline of this `README` document: 
 
 1. Provided the instructions regarding downloading and installing the `TeenSTD` package.
-2. Outlined the structure of the package (raw data, model parameters, and model code). 
+2. Outlined the components of the package (raw data, model parameters, and model code). 
 3. Executed the model code using calibrated parameters. 
 
 ## Installing `TeenSTD` package
 
-Before downloading the folder and installing the package, please make sure that `R` is installed on your computer or laptop. If you have `R` installed, the following steps showed how to download and install the packages. 
+Before downloading the folder and installing the package, please make sure that `R` is installed on your computer or laptop. If you have `R` and `RStudio` installed, the following steps showed how to download and install the packages. 
 
 * Download/clone the repository
 
 
     * If you have terminal, open terminal and type: 
+        
+        ```
+        git clone https://github.com/syzoekao/TeenSTD.git
+        ```
     
+
+    * If you don't have terminal, go to the main repository page and download the zip file following the image below: 
+    
+        ![](Figs/downloadzip.jpg)
+    
+
+* Go to the directory of the repository that was downloaded on your device. Here is an outline of the folder structure: 
+
     ```
-    git clone https://github.com/syzoekao/TeenSTD.git </code>
+    TeenSTD                        # This is the main folder
+      |-- README.md                # README file of the      
+      |-- Figs                     # Folder contains figures used in README
+      |-- TeenSTD                  # R package folder
+      |       |-- TeenSTD.Rproj    # TeenSTD Rproject file
+      |       |-- R                # Contains all functions in development
+      |       |-- data             # Data that are converted for R package use
+      |       |-- inst             # This includes raw data and `make_package.R` 
+      |       |-- man              # Manual
+      |       |-- test             # Test script
+      |       |-- DESCRIPTION      # Basic information of the package and installation requirement  
+      |       |-- NAMESPACE        
     ```
     
-    * If you don't have terminal, please download the zip file 
+    * Go to the `TeenSTD` subfolder and open `TeenSTD.Rproj`. This should open the `RStudio` software. 
+
+* To install `TeenSTD` package, open `make_package.R` in the folder `TeenSTD/test/`, and execute the script. 
+
+* If the script is executed without error, the package should be installed in the `R` library. To check the existence of `TeenSTD` package, type the following code in the console in `RStudio`: 
+
+    ```
+    library(TeenSTD)
+    ```
+
+## Components of the package
 
 
 
 
 
-
-
-
+    
 
 
 

@@ -26,6 +26,7 @@ Before downloading the folder and installing the package, please make sure that 
     
         ![](Figs/downloadzip.jpg)
     
+        * Unzip the file after finishing the download. 
 
 * Go to the directory of the repository that was downloaded on your device. Here is an outline of the folder structure: 
 

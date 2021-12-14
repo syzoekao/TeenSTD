@@ -44,7 +44,7 @@ sim_wrapper <- function(par_i) {
   return(output)
 }
 
-parmdf <- readRDS("test/posterior_set.RDS")
+parmdf <- posterior_set
 
 colnames(parmdf) <- c("treat_fact_f", "treat_fact_m", "screen_fact_m", "beta",
                       "factor", "alpha_m", "incubate", "fr_sex", "p_condom",

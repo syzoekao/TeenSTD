@@ -78,7 +78,7 @@ This package consists of three primary components: (1) data, (2) input parameter
     * The function [`process_output()`](https://github.com/syzoekao/TeenSTD/blob/abf7bc2ed3b898e65c9b5e1a08070eb930f57d02/TeenSTD/R/transmission.R#L163-L251) calculates the outcomes, which is incidence, accumulative over each year. 
     * The function [`calibrate_likelihood()`](https://github.com/syzoekao/TeenSTD/blob/abf7bc2ed3b898e65c9b5e1a08070eb930f57d02/TeenSTD/R/transmission.R#L256-L264) calculates the likelihood for each parameter set based on the assumption of normal distribution around each target. 
     
-## Execude model code
+## Execute model code
 
 To test run the code, please go to the main directory at the top level (`TeenSTD/` instead of `TeenSTD/TeenSTD`) and find [`example_simulation.R`](https://github.com/syzoekao/TeenSTD/blob/master/example_simulation.R). Open this Rscript in Rstudio and execute the entire script. This script will generate three figures showing the trend of chlamydial incidence for men and women and the pregnancy incidence from 2005 to 2013. The figures include the posterior trends, uncertainty bounds, and the targets. 
 
